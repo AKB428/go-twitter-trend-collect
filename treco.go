@@ -7,7 +7,10 @@ import (
 	"os"
 	"time"
 
+	"github.com/AKB428/go-twitter-trend-collect/model"
 	"github.com/ChimeraCoder/anaconda"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -19,24 +22,63 @@ func main() {
 		log.Fatal(err)
 	}
 
-	t := time.Now()
+	now := time.Now()
 
 	fmt.Println(trendResp.AsOf)
 	fmt.Println(trendResp.CreatedAt)
 	fmt.Println(trendResp.Locations)
 	fmt.Println(len(trendResp.Trends))
-	fmt.Println(t)
+	fmt.Println(now)
 
 	// https://pkg.go.dev/github.com/chimeracoder/anaconda#TrendResponse
 	// https://pkg.go.dev/github.com/chimeracoder/anaconda#Trend
+
+	var twitterTrends []model.TwitterTrend
+
 	for i, v := range trendResp.Trends {
 		ranking := i + 1
 		fmt.Printf("%d %s\n", ranking, v.Name)
+
+		t := model.TwitterTrend{Name: v.Name, Rank: int32(ranking), CreatedAt: now, UpdatedAt: now}
+		twitterTrends = append(twitterTrends, t)
 	}
+
+	db := gormConnect()
+	//https://gorm.io/docs/create.html
+	db.Create(&twitterTrends)
+
 }
 
 func getTwitterApi() *anaconda.TwitterApi {
 	anaconda.SetConsumerKey(os.Getenv("CONSUMER_KEY"))
 	anaconda.SetConsumerSecret(os.Getenv("CONSUMER_SECRET"))
 	return anaconda.NewTwitterApi(os.Getenv("ACCESS_TOKEN"), os.Getenv("ACCESS_TOKEN_SECRET"))
+}
+
+func gormConnect() *gorm.DB {
+	var err error
+
+	dbHost := os.Getenv("DB_HOST")
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbName := os.Getenv("DB_NAME")
+
+	if len(dbHost) == 0 {
+		dbUser = "root"
+	}
+
+	if len(dbUser) > 0 {
+		dbPass = ":" + dbPass
+	}
+
+	if len(dbHost) == 0 {
+		dbHost = "localhost"
+	}
+
+	db, err := gorm.Open(mysql.Open(dbUser + dbPass + "@" + "tcp(" + dbHost + ")/" + dbName + "?parseTime=true"))
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return db
 }
