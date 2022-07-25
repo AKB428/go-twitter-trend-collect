@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 )
@@ -18,15 +19,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	t := time.Now()
+
 	fmt.Println(trendResp.AsOf)
 	fmt.Println(trendResp.CreatedAt)
 	fmt.Println(trendResp.Locations)
 	fmt.Println(len(trendResp.Trends))
+	fmt.Println(t)
 
 	// https://pkg.go.dev/github.com/chimeracoder/anaconda#TrendResponse
 	// https://pkg.go.dev/github.com/chimeracoder/anaconda#Trend
-	for _, v := range trendResp.Trends {
-		fmt.Printf("%s %s %s\n", v.Name, v.Query, v.Url)
+	for i, v := range trendResp.Trends {
+		ranking := i + 1
+		fmt.Printf("%d %s\n", ranking, v.Name)
 	}
 }
 
