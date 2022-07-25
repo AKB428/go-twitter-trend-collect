@@ -25,4 +25,4 @@ anime_api_server_linux
 /tool/*.csv
 go-twitter-trend-collect
 treco
-.env
+.env*

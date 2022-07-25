@@ -6,5 +6,6 @@ CREATE TABLE `twitter_trends` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_twitter_trends_on_name` (`name`),
-  KEY `index_twitter_trends_on_created_at` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+  KEY `index_twitter_trends_on_created_at` (`created_at`),
+  KEY `index_twitter_trend_on_rank` (`rank`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;

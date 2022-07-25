@@ -9,11 +9,17 @@ import (
 
 	"github.com/AKB428/go-twitter-trend-collect/model"
 	"github.com/ChimeraCoder/anaconda"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	api := getTwitterApi()
 	v := url.Values{}
 	trendResp, err := api.GetTrendsByPlace(23424856, v)
