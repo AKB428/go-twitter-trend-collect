@@ -28,7 +28,11 @@ func main() {
 		log.Fatal(err)
 	}
 
-	now := time.Now()
+	jst, err := time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		panic(err)
+	}
+	now := time.Now().In(jst)
 
 	fmt.Println(trendResp.AsOf)
 	fmt.Println(trendResp.CreatedAt)
