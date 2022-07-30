@@ -85,7 +85,7 @@ func gormConnect() *gorm.DB {
 		dbHost = "localhost"
 	}
 
-	db, err := gorm.Open(mysql.Open(dbUser + dbPass + "@" + "tcp(" + dbHost + ")/" + dbName + "?parseTime=true"))
+	db, err := gorm.Open(mysql.Open(dbUser + dbPass + "@" + "tcp(" + dbHost + ")/" + dbName + "?parseTime=true&loc=Asia%2FTokyo"))
 	if err != nil {
 		panic(err.Error())
 	}
