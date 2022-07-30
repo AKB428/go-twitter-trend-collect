@@ -7,3 +7,6 @@ RUN go mod download && go mod verify
 
 COPY . .
 RUN go build -v -o treco
+
+# local only
+RUN rm .env && mv .env_local .env
