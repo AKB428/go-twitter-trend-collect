@@ -6,7 +6,7 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN go build -trimpath -ldflags '-s -w' -o treco
+RUN CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o treco
 
 # Prod only
 RUN rm .env && mv .env_prod .env

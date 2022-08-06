@@ -13,7 +13,7 @@ sample_envをコピーして.envもしくは.env_docker_local .env_prod を作�
 ## コンパイルと実行
 
 ```
-go build -trimpath -ldflags '-s -w' -o treco
+CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o treco
 ./treco
 ```
 
