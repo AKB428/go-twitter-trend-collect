@@ -11,8 +11,7 @@ RUN CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o treco
 # local only
 RUN rm .env && mv .env_docker_local .env
 
-# or scratch
-FROM alpine
+FROM scratch
 WORKDIR /usr/src/app
-COPY --from=builder /usr/src/app/treco ./
-COPY --from=builder /usr/src/app/.env .env
+COPY --from=builder ["/usr/src/app/treco" ,"/usr/src/app/.env", "./"]
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
