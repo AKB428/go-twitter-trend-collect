@@ -2,6 +2,20 @@
 
 Twitter トレンドの収集蓄積ツールです
 
+## 準備
+
+sample_envをコピーして.envもしくは.env_docker_local .env_prod を作成してください
+
+- .env ローカルで動かす用
+- .env_docker_local ローカルでdocker動かす用
+- .env_prod prodで動かす用
+
+## コンパイルと実行
+
+```
+go build -trimpath -ldflags '-s -w' -o treco
+./treco
+```
 
 ## Docker 
 
@@ -14,22 +28,7 @@ docker build -t treco .
 ### run
 
 ```
-docker run --rm -i treco ./treco
-```
-
-
-## Docker-Prod
-
-### build
-
-```
-docker build -t treco_prod -f Dockerfile-Prod .
-```
-
-### run
-
-```
-docker run --rm -i treco_prod ./treco
+docker run --rm treco ./treco
 ```
 
 ## Docker-Prod AWS ECR
