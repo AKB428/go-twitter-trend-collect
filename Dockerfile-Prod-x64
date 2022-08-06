@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 golang:1.18
+FROM --platform=linux/amd64 golang:1.18 as builder
 
 WORKDIR /usr/src/app
 
@@ -8,5 +8,10 @@ RUN go mod download && go mod verify
 COPY . .
 RUN CGO_ENABLED=0 go build -trimpath -ldflags '-s -w' -o treco
 
-# Prod only
+# local only
 RUN rm .env && mv .env_prod .env
+
+FROM --platform=linux/amd64 scratch
+WORKDIR /usr/src/app
+COPY --from=builder ["/usr/src/app/treco" ,"/usr/src/app/.env", "./"]
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
