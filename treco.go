@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"time"
+	_ "time/tzdata"
 
 	"github.com/AKB428/go-twitter-trend-collect/model"
 	"github.com/ChimeraCoder/anaconda"
